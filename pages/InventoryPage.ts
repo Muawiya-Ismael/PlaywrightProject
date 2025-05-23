@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 
 export class InventoryPageClass {
-  private addButton;
+  private addButton:Locator;
   private removeButton;
   private cartBadge;
   private sortSelect;
@@ -22,7 +22,7 @@ export class InventoryPageClass {
     return this.addButton;
   }
 
-  getRemoveButton() {
+  getRemoveButton() : Locator {
     return this.page.locator('[data-test="remove-sauce-labs-backpack"]');
     return this.removeButton;
   }
