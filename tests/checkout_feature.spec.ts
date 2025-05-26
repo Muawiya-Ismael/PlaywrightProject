@@ -75,8 +75,6 @@ test.describe("Checkout Feature", () => {
 
             await checkoutPage.finishCheckout();
 
-            checkoutPage.finishCheckout
-
             await expect(checkoutPage.completeMsg).toBeVisible();
             await expect(checkoutPage.completeMsg).toContainText(
                 "Thank you for your order",
