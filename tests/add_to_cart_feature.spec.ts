@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, Page,expect } from '@playwright/test';
 import { LoginPageClass } from '../pages/LoginPage';
 import { InventoryPageClass } from '../pages/InventoryPage';
 
@@ -7,23 +7,28 @@ test.describe('Add to Cart Feature', () => {
   let testNumber = 0;
   let loginPage: LoginPageClass;
   let inventoryPage: InventoryPageClass;
+  let sharedPage: Page;
 
   test.beforeAll(async ({ browser }, testInfo) => {
-    const page = await browser.newPage();
-    loginPage = new LoginPageClass(page);
+    sharedPage = await browser.newPage();
+    loginPage = new LoginPageClass(sharedPage);
     await loginPage.goto();
     await loginPage.login(process.env.SAUCE_USERNAME!, process.env.SAUCE_PASSWORD!);
-    await page.context().storageState({ path: 'playwright/.auth/user.json' });
-    await page.close();
+    await sharedPage.context().storageState({ path: 'playwright/.auth/user.json' });
+    await sharedPage.close();
     console.log(`Running tests on browser: ${testInfo.project.name}`);
   });
 
-  test.afterAll(async ({ page }) => {
-    await page.close();
+  test.afterAll(async () => {
+    if (sharedPage && !sharedPage.isClosed()) {
+        await sharedPage.close();
+    }
   });
 
   test.beforeEach(async ({ context , page}, testInfo) => {
-    const storageState = JSON.parse(require('fs').readFileSync('playwright/.auth/user.json', 'utf-8'));
+    const storageState = JSON.parse(
+            require("fs").readFileSync('playwright/.auth/user.json', "utf-8"),
+    );    
     await context.addCookies(storageState.cookies);
     testNumber++;
         console.log(`Running test ${testNumber}: ${testInfo.title}`);

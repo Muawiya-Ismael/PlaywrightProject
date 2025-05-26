@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test,Page, expect } from '@playwright/test';
 import { LoginPageClass } from '../pages/LoginPage';
 
 
@@ -48,13 +48,17 @@ const missingCredentials = [
 test.describe('Login Feature', () => {
     let testNumber = 0;
     let loginPage: LoginPageClass;
+    let sharedPage: Page;
 
-    test.beforeAll(async ({ page }, testInfo) => {
+    test.beforeAll(async ({browser }, testInfo) => {
+        sharedPage = await browser.newPage();
         console.log(`Running tests on browser: ${testInfo.project.name}`);
     });
 
-    test.afterAll(async ({ page }) => {
-        await page.close();
+    test.afterAll(async () => {
+        if (sharedPage && !sharedPage.isClosed()) {
+            await sharedPage.close();
+        }
     });
 
     test.beforeEach(async ({ page }, testInfo) => {
