@@ -17,7 +17,7 @@ test.describe("Remove From Cart Feature", () => {
             process.env.SAUCE_USERNAME!,
             process.env.SAUCE_PASSWORD!,
         );
-        await sharedPage.context().storageState({ path: '../playwright/.auth/user.json' });
+        await sharedPage.context().storageState({ path: 'playwright/.auth/user.json' });
         await sharedPage.close();
         console.log(`Running tests on browser: ${testInfo.project.name}`);
     });
@@ -30,7 +30,7 @@ test.describe("Remove From Cart Feature", () => {
 
     test.beforeEach(async ({ context, page }, testInfo) => {
         const storageState = JSON.parse(
-            require("fs").readFileSync('../playwright/.auth/user.json', "utf-8"),
+            require("fs").readFileSync('playwright/.auth/user.json', "utf-8"),
         );
         await context.addCookies(storageState.cookies);
         testNumber++;

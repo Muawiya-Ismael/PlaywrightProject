@@ -12,7 +12,7 @@ test.describe('Sort Feature', () => {
         loginPage = new LoginPageClass(page);
         await loginPage.goto();
         await loginPage.login(process.env.SAUCE_USERNAME!, process.env.SAUCE_PASSWORD!);
-        await page.context().storageState({ path: '../playwright/.auth/user.json' });
+        await page.context().storageState({ path: 'playwright/.auth/user.json' });
         await page.close();
         console.log(`Running tests on browser: ${testInfo.project.name}`);
     });
@@ -22,7 +22,7 @@ test.describe('Sort Feature', () => {
     });
 
     test.beforeEach(async ({ context, page }, testInfo) => {
-        const storageState = JSON.parse(require('fs').readFileSync('../playwright/.auth/user.json', 'utf-8'));
+        const storageState = JSON.parse(require('fs').readFileSync('playwright/.auth/user.json', 'utf-8'));
         await context.addCookies(storageState.cookies);
         testNumber++;
          console.log(`Running test ${testNumber}: ${testInfo.title}`);
